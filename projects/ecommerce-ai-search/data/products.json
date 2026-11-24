@@ -1,0 +1,59 @@
+
+[
+  {
+    "id": 1,
+    "name": "Apple iPhone 16",
+    "category": "Smartphones",
+    "description": "Apple smartphone with advanced camera and A18 chip",
+    "price": 69999
+  },
+  {
+    "id": 2,
+    "name": "Samsung Galaxy S25 Ultra",
+    "category": "Smartphones",
+    "description": "Premium Android phone with S Pen and AI features",
+    "price": 119999
+  },
+  {
+    "id": 3,
+    "name": "Sony WH-1000XM5",
+    "category": "Headphones",
+    "description": "Wireless noise cancelling headphones",
+    "price": 24999
+  },
+  {
+    "id": 4,
+    "name": "Dell XPS Laptop",
+    "category": "Laptops",
+    "description": "High performance laptop for developers and professionals",
+    "price": 145000
+  },
+  {
+    "id": 5,
+    "name": "Apple MacBook Air",
+    "category": "Laptops",
+    "description": "Lightweight laptop with Apple silicon",
+    "price": 99900
+  },
+  {
+    "id": 6,
+    "name": "Samsung Galaxy Buds",
+    "category": "Headphones",
+    "description": "Bluetooth wireless earbuds with clear sound",
+    "price": 8999
+  },
+  {
+    "id": 7,
+    "name": "Logitech MX Master 3S",
+    "category": "Accessories",
+    "description": "Wireless ergonomic mouse for productivity",
+    "price": 8995
+  },
+  {
+    "id": 8,
+    "name": "Apple iPad Air",
+    "category": "Tablets",
+    "description": "Tablet for productivity, reading and entertainment",
+    "price": 59900
+  }
+]
