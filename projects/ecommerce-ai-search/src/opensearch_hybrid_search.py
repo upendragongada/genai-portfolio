@@ -44,7 +44,61 @@ def load_model():
     return model
 
 
-def hybrid_search(query, top_k=5):
+def hybrid_search(
+    query,
+    top_k=5,
+    category=None,
+    min_price=None,
+    max_price=None
+):
+
+    if not query or len(query.strip()) < 2:
+        raise ValueError("Search query must contain at least 2 characters.")
+
+    if min_price is not None and min_price < 0:
+        raise ValueError("Minimum price cannot be negative.")
+
+    if max_price is not None and max_price < 0:
+        raise ValueError("Maximum price cannot be negative.")
+
+    if min_price is not None and max_price is not None:
+        if min_price > max_price:
+            raise ValueError("Minimum price cannot exceed maximum price.")
+
+    if not 1 <= top_k <= 100:
+        raise ValueError("top_k must be between 1 and 100.")
+
+    # Build OpenSearch filters.
+    filters = []
+
+    if category:
+        filters.append({
+            "term": {
+                "category": category
+            }
+        })
+
+    price_range = {}
+
+    if min_price is not None:
+        price_range["gte"] = min_price
+
+    if max_price is not None:
+        price_range["lte"] = max_price
+
+    if price_range:
+        filters.append({
+            "range": {
+                "price": price_range
+            }
+        })
+
+    # Apply identical filters to both retrieval methods.
+    filter_query = {
+        "bool": {
+            "filter": filters
+        }
+    }
 
     embedding_model = load_model()
 
@@ -53,6 +107,7 @@ def hybrid_search(query, top_k=5):
         normalize_embeddings=True
     ).tolist()
 
+    # BM25 + semantic vector search.
     search_body = {
         "size": top_k,
         "_source": {
@@ -61,23 +116,36 @@ def hybrid_search(query, top_k=5):
         "query": {
             "hybrid": {
                 "queries": [
+
+                    # BM25 keyword search
                     {
-                        "multi_match": {
-                            "query": query,
-                            "fields": [
-                                "name",
-                                "description"
-                            ]
+                        "bool": {
+                            "must": [
+                                {
+                                    "multi_match": {
+                                        "query": query,
+                                        "fields": [
+                                            "name",
+                                            "description"
+                                        ]
+                                    }
+                                }
+                            ],
+                            "filter": filters
                         }
                     },
+
+                    # Semantic vector search
                     {
                         "knn": {
                             "embedding": {
                                 "vector": query_embedding,
-                                "k": 8
+                                "k": max(top_k, 8),
+                                "filter": filter_query
                             }
                         }
                     }
+
                 ]
             }
         }
