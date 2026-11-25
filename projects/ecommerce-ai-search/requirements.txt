@@ -1,2 +1,6 @@
 rank-bm25
 sentence-transformers
+fastapi
+uvicorn
+pytest
+streamlit

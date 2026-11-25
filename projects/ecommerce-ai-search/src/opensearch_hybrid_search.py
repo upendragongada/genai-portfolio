@@ -128,34 +128,14 @@ def hybrid_search(query, top_k=5):
 
     except urllib.error.HTTPError as error:
 
-        print("OpenSearch HTTP error:", error.code)
-        print(error.read().decode())
+        details = error.read().decode()
+
+        raise RuntimeError(
+            f"OpenSearch HTTP error {error.code}: {details}"
+        ) from error
 
     except Exception as error:
 
-        print("Search error:", str(error))
-
-    return []
-
-
-def main():
-
-    print("======================================")
-    print("       ECOMMERCE HYBRID SEARCH")
-    print("======================================")
-
-    while True:
-
-        query = input("\nEnter search query (exit to stop): ")
-
-        if query.lower() == "exit":
-            break
-
-        if not query.strip():
-            continue
-
-        hybrid_search(query)
-
-
-if __name__ == "__main__":
-    main()
+        raise RuntimeError(
+            f"OpenSearch request failed: {error}"
+        ) from error
