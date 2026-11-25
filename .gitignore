@@ -221,3 +221,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local OpenSearch backups and configuration
+opensearch-backup.tar
+opensearch-container-config.json
+opensearch-data-repair/
+
+# Root-level local npm files
+/package-lock.json
